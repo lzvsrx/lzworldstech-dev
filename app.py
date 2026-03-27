@@ -414,7 +414,7 @@ elif selected == "Perfil":
         write_braille("### ⚡ Estatísticas LZ", is_markdown=True)
         stats = [
             ("💻", "Anos de Código", "5+"),
-            ("🛠️", "Reparos de PC", "500+"),
+            ("🛠️", "Reparos de PC", "3"),
             ("📁", "Projetos GitHub", "15+"),
             ("📚", "Certificações", "20+")
         ]
