@@ -406,24 +406,36 @@ elif selected == "Perfil":
     col_perfil1, col_perfil2 = st.columns([1.2, 1])
     
     with col_perfil1:
-        # Perfil Text - Absolute left alignment to prevent code block formatting
-        st.markdown('<div class="tech-card">', unsafe_allow_html=True)
-        perfil_markdown = """👤 **Identidade Digital**
-- **Nome:** Luiz Otavio Valenzi Sousa
-- **Idade:** 23 anos
-- **Localização:** Pouso Alegre - MG
-- **Status:** Desenvolvedor & Futuro Engenheiro de Software
-
-🚀 **Minha Jornada**
-Desde os primeiros cliques, a tecnologia foi meu playground. Comecei desmontando e montando hardwares e hoje construo sistemas complexos. Minha paixão é a intersecção entre o **Código Eficiente** e a **Acessibilidade Universal**.
-
-💡 **Missão e Valores**
-Acredito que a tecnologia deve ser democrática. Por isso, foco em desenvolver soluções que incluam todos (como meu sistema de leitura em Braille e áudio). Meus valores são: **Inovação constante, Integridade técnica e Curiosidade sem limites.**
-
-🎯 **Visão de Futuro**
-Meu objetivo é fundar a **LZ Tech**, uma empresa focada em transformar a vida das pessoas através de softwares inteligentes e hardware de alta performance."""
-        write_braille(perfil_markdown, is_markdown=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        # Perfil Text - Wrap content inside the tech-card div using HTML tags
+        perfil_html = """
+        <div class="tech-card">
+            <h3 style="color: #00ffcc; font-size: 1.2rem; margin-bottom: 15px;">👤 Identidade Digital</h3>
+            <ul style="list-style-type: none; padding-left: 0; color: #e0f7fa;">
+                <li style="margin-bottom: 8px;"><strong>Nome:</strong> Luiz Otavio Valenzi Sousa</li>
+                <li style="margin-bottom: 8px;"><strong>Idade:</strong> 23 anos</li>
+                <li style="margin-bottom: 8px;"><strong>Localização:</strong> Pouso Alegre - MG</li>
+                <li style="margin-bottom: 8px;"><strong>Status:</strong> Desenvolvedor & Futuro Engenheiro de Software</li>
+            </ul>
+            
+            <h3 style="color: #00ffcc; font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px;">🚀 Minha Jornada</h3>
+            <p style="color: #e0f7fa; line-height: 1.6; margin-bottom: 15px;">
+                Desde os primeiros cliques, a tecnologia foi meu playground. Comecei desmontando e montando hardwares e hoje construo sistemas complexos. 
+                Minha paixão é a intersecção entre o <strong>Código Eficiente</strong> e a <strong>Acessibilidade Universal</strong>.
+            </p>
+            
+            <h3 style="color: #00ffcc; font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px;">💡 Missão e Valores</h3>
+            <p style="color: #e0f7fa; line-height: 1.6; margin-bottom: 15px;">
+                Acredito que a tecnologia deve ser democrática. Por isso, foco em desenvolver soluções que incluam todos (como meu sistema de leitura em Braille e áudio). 
+                Meus valores são: <strong>Inovação constante, Integridade técnica e Curiosidade sem limites.</strong>
+            </p>
+            
+            <h3 style="color: #00ffcc; font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px;">🎯 Visão de Futuro</h3>
+            <p style="color: #e0f7fa; line-height: 1.6;">
+                Meu objetivo é fundar a <strong>LZ Tech</strong>, uma empresa focada em transformar a vida das pessoas através de softwares inteligentes e hardware de alta performance.
+            </p>
+        </div>
+        """
+        write_braille(perfil_html, is_markdown=True)
         
     with col_perfil2:
         write_braille("### ⚡ Estatísticas LZ", is_markdown=True)
