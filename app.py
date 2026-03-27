@@ -407,7 +407,7 @@ Meu objetivo é fundar a <strong>LZ Tech</strong>, uma empresa focada em transfo
                 st.markdown(f'<p class="braille-text">{text_to_braille(f"{label}: {val}")}</p>', unsafe_allow_html=True)
 
     write_braille("---", is_markdown=True)
-    write_braille("### � Linha do Tempo Profissional", is_markdown=True)
+    write_braille("### 📜 Linha do Tempo Profissional", is_markdown=True)
     
     timeline = [
         ("2020", "Início do Curso Técnico no IFSULDEMINAS - Onde a paixão virou profissão."),
@@ -649,7 +649,7 @@ allowfullscreen>
     with col2:
         write_braille("### Conecte-se comigo", is_markdown=True)
         links_html = """<div class="tech-card">
-<p><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="25"> <a href="https://github.com/lzvsrx" style="color: #00ffcc; text-decoration: none;">GitHub</a></p>
+<p><img src="https://img.icons8.com/?size=100&id=0tREDFkScvsm&format=png&color=000000" width="25"> <a href="https://github.com/lzvsrx" style="color: #00ffcc; text-decoration: none;">GitHub</a></p>
 <p><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="25"> <a href="https://www.linkedin.com/in/luiz-otavio-valenzi-sousa-1180bb360/" style="color: #00ffcc; text-decoration: none;">LinkedIn</a></p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="25"> <a href="https://www.instagram.com/lzworldstech/" style="color: #00ffcc; text-decoration: none;">Instagram</a></p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="25"> <a href="https://wa.me/5535999215995" style="color: #00ffcc; text-decoration: none;">WhatsApp: +55 35 99921-5995</a></p>
