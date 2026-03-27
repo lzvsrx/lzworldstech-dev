@@ -4,6 +4,39 @@ import requests
 import base64
 from PIL import Image
 import os
+import smtplib
+from email.mime.text import MIMEText
+
+from email.mime.multipart import MIMEMultipart
+
+# Function to send email via Mailtrap SMTP
+def send_email_mailtrap(name, sender_email, message):
+    try:
+        # These should be configured in .streamlit/secrets.toml or Streamlit Cloud Secrets
+        mailtrap_user = st.secrets["MAILTRAP_USER"]
+        mailtrap_pass = st.secrets["MAILTRAP_PASSWORD"]
+        mailtrap_host = st.secrets.get("MAILTRAP_HOST", "sandbox.smtp.mailtrap.io")
+        mailtrap_port = st.secrets.get("MAILTRAP_PORT", 2525)
+        
+        # Create message
+        msg = MIMEMultipart()
+        msg['From'] = "portfolio@lztech.com"
+        msg['To'] = "valenzisousaluizotavio@gmail.com"
+        msg['Subject'] = f"🚀 NOVO CONTATO: {name}"
+        
+        body = f"Nome: {name}\nE-mail: {sender_email}\n\nMensagem:\n{message}"
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Connect and send
+        with smtplib.SMTP(mailtrap_host, mailtrap_port) as server:
+            server.starttls()
+            server.login(mailtrap_user, mailtrap_pass)
+            server.sendmail(msg['From'], [msg['To']], msg.as_string())
+        return True
+    except Exception as e:
+        st.error(f"Erro ao enviar e-mail: {e}")
+        st.info("Certifique-se de configurar as chaves MAILTRAP_USER e MAILTRAP_PASSWORD nos Secrets do Streamlit.")
+        return False
 
 # Page Config
 st.set_page_config(page_title="Luiz Otavio Valenzi Sousa - Portfolio", page_icon="💻", layout="wide")
@@ -612,30 +645,32 @@ elif selected == "Contato":
     
     with col1:
         write_braille("### Me mande uma mensagem!", is_markdown=True)
-        # Form logic - Using st.components.v1.html or keeping markdown strictly without indentation
-        contact_form = """<div class="tech-card">
-<form action="https://formsubmit.co/valenzisousaluizotavio@gmail.com" method="POST">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_template" value="table">
-<input type="hidden" name="_subject" value="Novo Contato do Portfolio LZ TECH!">
-<div style="margin-bottom: 20px;">
-<label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">👤 Seu Nome</label>
-<input type="text" name="name" placeholder="Digite seu nome completo..." style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none;" required>
-</div>
-<div style="margin-bottom: 20px;">
-<label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">📧 Seu E-mail</label>
-<input type="email" name="email" placeholder="exemplo@email.com" style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none;" required>
-</div>
-<div style="margin-bottom: 25px;">
-<label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">💬 Mensagem</label>
-<textarea name="message" rows="5" placeholder="Como posso te ajudar?" style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none; resize: none;" required></textarea>
-</div>
-<button type="submit" style="width: 100%; background: linear-gradient(90deg, #00ffcc, #00ff00); color: #050a15; border: none; padding: 18px; border-radius: 12px; cursor: pointer; font-weight: bold; font-family: 'Share Tech Mono', monospace; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);">🚀 Iniciar Transmissão</button>
-</form>
-</div>"""
-        st.markdown(contact_form, unsafe_allow_html=True)
+        # Using Streamlit Native Form for better integration with Mailtrap logic
+        with st.form("mailtrap_contact_form", clear_on_submit=True):
+            st.markdown('<p style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; margin-bottom: 0px; text-transform: uppercase;">👤 Seu Nome</p>', unsafe_allow_html=True)
+            name = st.text_input("Seu Nome", label_visibility="collapsed", placeholder="Digite seu nome completo...")
+            
+            st.markdown('<p style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; margin-bottom: 0px; text-transform: uppercase;">📧 Seu E-mail</p>', unsafe_allow_html=True)
+            email = st.text_input("Seu E-mail", label_visibility="collapsed", placeholder="exemplo@email.com")
+            
+            st.markdown('<p style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; margin-bottom: 0px; text-transform: uppercase;">💬 Mensagem</p>', unsafe_allow_html=True)
+            message = st.text_area("Mensagem", label_visibility="collapsed", placeholder="Como posso te ajudar?", height=150)
+            
+            submit_button = st.form_submit_button("🚀 Iniciar Transmissão via Mailtrap")
+            
+            if submit_button:
+                if name and email and message:
+                    with st.spinner("Enviando sinal..."):
+                        if send_email_mailtrap(name, email, message):
+                            st.success("Mensagem enviada com sucesso! Verifique seu Mailtrap.")
+                            st.balloons()
+                        else:
+                            st.error("Erro ao enviar. Verifique as configurações de Secrets.")
+                else:
+                    st.warning("Por favor, preencha todos os campos do protocolo.")
+
         if st.session_state.get('braille_mode', False):
-            st.markdown(f'<p class="braille-text">{text_to_braille("Formulário de Contato: Nome, E-mail e Mensagem")}</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="braille-text">{text_to_braille("Formulário de Contato Mailtrap: Nome, E-mail e Mensagem")}</p>', unsafe_allow_html=True)
         
     with col2:
         write_braille("### Conecte-se comigo", is_markdown=True)
