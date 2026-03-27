@@ -612,13 +612,33 @@ elif selected == "Contato":
     
     with col1:
         write_braille("### Me mande uma mensagem!", is_markdown=True)
+        # Enhanced contact form using FormSubmit with advanced configs
         contact_form = f"""
         <form action="https://formsubmit.co/valenzisousaluizotavio@gmail.com" method="POST">
+            <!-- FormSubmit Configurations -->
             <input type="hidden" name="_captcha" value="false">
-            <input type="text" name="name" placeholder="Seu Nome" style="width: 100%; padding: 10px; margin-bottom: 10px; background: transparent; border: 1px solid #00ffcc; color: #00ffcc;" required>
-            <input type="email" name="email" placeholder="Seu Email" style="width: 100%; padding: 10px; margin-bottom: 10px; background: transparent; border: 1px solid #00ffcc; color: #00ffcc;" required>
-            <textarea name="message" placeholder="Descrição do seu projeto" style="width: 100%; padding: 10px; margin-bottom: 10px; background: transparent; border: 1px solid #00ffcc; color: #00ffcc;" required></textarea>
-            <button type="submit" style="background: #00ffcc; color: #050a15; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);">Enviar</button>
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_subject" value="Novo Contato do Portfolio LZ TECH!">
+            <input type="hidden" name="_next" value="https://lzworldstech-dev.streamlit.app/"> <!-- Optional: URL to redirect after success -->
+            
+            <div style="margin-bottom: 15px;">
+                <label style="color: #00ffcc; font-size: 0.9rem; display: block; margin-bottom: 5px;">Seu Nome</label>
+                <input type="text" name="name" placeholder="Ex: Luiz Silva" style="width: 100%; padding: 12px; background: rgba(10, 25, 47, 0.5); border: 1px solid #00ffcc; color: #e0f7fa; border-radius: 8px;" required>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="color: #00ffcc; font-size: 0.9rem; display: block; margin-bottom: 5px;">Seu Melhor E-mail</label>
+                <input type="email" name="email" placeholder="Ex: contato@empresa.com" style="width: 100%; padding: 12px; background: rgba(10, 25, 47, 0.5); border: 1px solid #00ffcc; color: #e0f7fa; border-radius: 8px;" required>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="color: #00ffcc; font-size: 0.9rem; display: block; margin-bottom: 5px;">Mensagem / Projeto</label>
+                <textarea name="message" rows="4" placeholder="Descreva sua ideia ou proposta..." style="width: 100%; padding: 12px; background: rgba(10, 25, 47, 0.5); border: 1px solid #00ffcc; color: #e0f7fa; border-radius: 8px;" required></textarea>
+            </div>
+            
+            <button type="submit" style="width: 100%; background: #00ffcc; color: #050a15; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Share Tech Mono', monospace; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 15px rgba(0, 255, 204, 0.4); transition: 0.3s;">
+                🚀 Enviar Mensagem Direta
+            </button>
         </form>
         """
         st.markdown(contact_form, unsafe_allow_html=True)
