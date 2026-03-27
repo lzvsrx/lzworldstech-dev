@@ -1,47 +1,11 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import requests
 import base64
-from PIL import Image
 import os
-import smtplib
-from email.mime.text import MIMEText
-
-from email.mime.multipart import MIMEMultipart
-
-# Function to send email via Mailtrap SMTP
-def send_email_mailtrap(name, sender_email, message):
-    try:
-        # These should be configured in .streamlit/secrets.toml or Streamlit Cloud Secrets
-        mailtrap_user = st.secrets["MAILTRAP_USER"]
-        mailtrap_pass = st.secrets["MAILTRAP_PASSWORD"]
-        mailtrap_host = st.secrets.get("MAILTRAP_HOST", "sandbox.smtp.mailtrap.io")
-        mailtrap_port = st.secrets.get("MAILTRAP_PORT", 2525)
-        
-        # Create message
-        msg = MIMEMultipart()
-        msg['From'] = "portfolio@lztech.com"
-        msg['To'] = "valenzisousaluizotavio@gmail.com"
-        msg['Subject'] = f"🚀 NOVO CONTATO: {name}"
-        
-        body = f"Nome: {name}\nE-mail: {sender_email}\n\nMensagem:\n{message}"
-        msg.attach(MIMEText(body, 'plain'))
-
-        # Connect and send
-        with smtplib.SMTP(mailtrap_host, mailtrap_port) as server:
-            server.starttls()
-            server.login(mailtrap_user, mailtrap_pass)
-            server.sendmail(msg['From'], [msg['To']], msg.as_string())
-        return True
-    except Exception as e:
-        st.error(f"Erro ao enviar e-mail: {e}")
-        st.info("Certifique-se de configurar as chaves MAILTRAP_USER e MAILTRAP_PASSWORD nos Secrets do Streamlit.")
-        return False
 
 # Page Config
 st.set_page_config(page_title="Luiz Otavio Valenzi Sousa - Portfolio", page_icon="💻", layout="wide")
 
-# Custom CSS for technological theme, Don Graffiti font, and animations
 def get_base64_font(font_path):
     if os.path.exists(font_path):
         with open(font_path, "rb") as f:
@@ -645,32 +609,20 @@ elif selected == "Contato":
     
     with col1:
         write_braille("### Me mande uma mensagem!", is_markdown=True)
-        # Using Streamlit Native Form for better integration with Mailtrap logic
-        with st.form("mailtrap_contact_form", clear_on_submit=True):
-            st.markdown('<p style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; margin-bottom: 0px; text-transform: uppercase;">👤 Seu Nome</p>', unsafe_allow_html=True)
-            name = st.text_input("Seu Nome", label_visibility="collapsed", placeholder="Digite seu nome completo...")
-            
-            st.markdown('<p style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; margin-bottom: 0px; text-transform: uppercase;">📧 Seu E-mail</p>', unsafe_allow_html=True)
-            email = st.text_input("Seu E-mail", label_visibility="collapsed", placeholder="exemplo@email.com")
-            
-            st.markdown('<p style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; margin-bottom: 0px; text-transform: uppercase;">💬 Mensagem</p>', unsafe_allow_html=True)
-            message = st.text_area("Mensagem", label_visibility="collapsed", placeholder="Como posso te ajudar?", height=150)
-            
-            submit_button = st.form_submit_button("🚀 Iniciar Transmissão via Mailtrap")
-            
-            if submit_button:
-                if name and email and message:
-                    with st.spinner("Enviando sinal..."):
-                        if send_email_mailtrap(name, email, message):
-                            st.success("Mensagem enviada com sucesso! Verifique seu Mailtrap.")
-                            st.balloons()
-                        else:
-                            st.error("Erro ao enviar. Verifique as configurações de Secrets.")
-                else:
-                    st.warning("Por favor, preencha todos os campos do protocolo.")
-
+        # Jotform Iframe Integration
+        jotform_iframe = """<iframe 
+title="Envio de Projetos de Site" 
+src="https://form.jotform.com/260857281730056" 
+width="100%" 
+height="800" 
+frameborder="0" 
+style="border:none; border-radius:15px; background: rgba(10, 25, 47, 0.7); backdrop-filter: blur(10px);" 
+allowfullscreen> 
+</iframe>"""
+        st.markdown(jotform_iframe, unsafe_allow_html=True)
+        
         if st.session_state.get('braille_mode', False):
-            st.markdown(f'<p class="braille-text">{text_to_braille("Formulário de Contato Mailtrap: Nome, E-mail e Mensagem")}</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="braille-text">{text_to_braille("Formulário de Contato Jotform: Envio de Projetos de Site")}</p>', unsafe_allow_html=True)
         
     with col2:
         write_braille("### Conecte-se comigo", is_markdown=True)
