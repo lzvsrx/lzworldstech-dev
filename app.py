@@ -406,8 +406,9 @@ elif selected == "Perfil":
     col_perfil1, col_perfil2 = st.columns([1.2, 1])
     
     with col_perfil1:
-        # Perfil Text without leading indentation to avoid code block rendering
-        perfil_text = """👤 **Identidade Digital**
+        # Perfil Text - Absolute left alignment to prevent code block formatting
+        st.markdown('<div class="tech-card">', unsafe_allow_html=True)
+        perfil_markdown = """👤 **Identidade Digital**
 - **Nome:** Luiz Otavio Valenzi Sousa
 - **Idade:** 23 anos
 - **Localização:** Pouso Alegre - MG
@@ -421,29 +422,24 @@ Acredito que a tecnologia deve ser democrática. Por isso, foco em desenvolver s
 
 🎯 **Visão de Futuro**
 Meu objetivo é fundar a **LZ Tech**, uma empresa focada em transformar a vida das pessoas através de softwares inteligentes e hardware de alta performance."""
-        
-        # Render the card manually to avoid markdown issues inside HTML
-        st.markdown('<div class="tech-card">', unsafe_allow_html=True)
-        write_braille(perfil_text, is_markdown=True)
+        write_braille(perfil_markdown, is_markdown=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col_perfil2:
         write_braille("### ⚡ Estatísticas LZ", is_markdown=True)
         stats = [
             ("💻", "Anos de Código", "5+"),
-            ("🛠️", "Reparos de PC", "3"),
+            ("🛠️", "Reparos de PC", "500+"),
             ("📁", "Projetos GitHub", "15+"),
             ("📚", "Certificações", "20+")
         ]
         
         for icon, label, val in stats:
-            st.markdown(f"""
-            <div class="tech-card" style="margin-bottom: 10px; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
-                <span style="font-size: 1.5rem;">{icon}</span>
-                <span style="color: #e0f7fa; font-family: 'Share Tech Mono';">{label}</span>
-                <span style="color: #00ffcc; font-weight: bold; font-size: 1.2rem;">{val}</span>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="tech-card" style="margin-bottom: 10px; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+<span style="font-size: 1.5rem;">{icon}</span>
+<span style="color: #e0f7fa; font-family: 'Share Tech Mono'; flex-grow: 1; margin-left: 15px;">{label}</span>
+<span style="color: #00ffcc; font-weight: bold; font-size: 1.2rem;">{val}</span>
+</div>""", unsafe_allow_html=True)
             if st.session_state.get('braille_mode', False):
                 st.markdown(f'<p class="braille-text">{text_to_braille(f"{label}: {val}")}</p>', unsafe_allow_html=True)
 
@@ -491,9 +487,9 @@ elif selected == "Habilidades":
         "MySQL": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
         "SQL": "https://www.svgrepo.com/show/331760/sql-database-generic.svg",
         "Mobile": "https://img.icons8.com/?size=100&id=12580&format=png&color=00FF00",
-        "Inteligência Artificial": "https://img.icons8.com/?size=100&id=v999Sa6VfOpx&format=png&color=00FF00",
+        "Inteligência Artificial": "https://img.icons8.com/?size=100&id=61864&format=png&color=000000",
         "Montagem de Computador": "https://img.icons8.com/nolan/64/computer.png",
-        "Formatação de Computador": "https://img.icons8.com/?size=100&id=102511&format=png&color=00FF00",
+        "Formatação de Computador": "https://img.icons8.com/?size=100&id=12908&format=png&color=000000",
         "Reparo de Computador": "https://img.icons8.com/nolan/64/maintenance.png",
     }
     
