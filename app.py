@@ -370,10 +370,10 @@ with st.sidebar:
 if selected == "Home":
     col1, col2 = st.columns([2, 1])
     with col1:
-        write_braille('<h1 class="graffiti-text">🚀 Luiz Otavio Valenzi Sousa</h1>', is_markdown=True)
-        write_braille("### 💻 Dev Frontend, Backend & Mobile | 🛠️ Técnico em Informática", is_markdown=True)
+        write_braille('<h1 class="graffiti-text">Luiz Otavio Valenzi Sousa</h1>', is_markdown=True)
+        write_braille("### � Desenvolvedor Full-Stack & Futuro Engenheiro de Software", is_markdown=True)
         write_braille("✨ Bem-vindo ao meu universo tecnológico. Transformando sonhos em código. 🌌")
-        write_braille("📍 Brasil")
+        write_braille("📍 Localizado em Pouso Alegre - MG")
         
     with col2:
         # Check if profile picture exists, else use placeholder
@@ -392,23 +392,26 @@ elif selected == "Perfil":
     col_perfil1, col_perfil2 = st.columns([1.2, 1])
     
     with col_perfil1:
-        perfil_text = """
-        👤 **Identidade Digital**
-        - **Nome:** Luiz Otavio Valenzi Sousa
-        - **Idade:** 23 anos
-        - **Localização:** Minas Gerais, Brasil
-        - **Status:** Desenvolvedor & Futuro Engenheiro de Software
+        # Perfil Text without leading indentation to avoid code block rendering
+        perfil_text = """👤 **Identidade Digital**
+- **Nome:** Luiz Otavio Valenzi Sousa
+- **Idade:** 23 anos
+- **Localização:** Pouso Alegre - MG
+- **Status:** Desenvolvedor & Futuro Engenheiro de Software
 
-        🚀 **Minha Jornada**
-        Desde os primeiros cliques, a tecnologia foi meu playground. Comecei desmontando e montando hardwares e hoje construo sistemas complexos. Minha paixão é a intersecção entre o **Código Eficiente** e a **Acessibilidade Universal**.
+🚀 **Minha Jornada**
+Desde os primeiros cliques, a tecnologia foi meu playground. Comecei desmontando e montando hardwares e hoje construo sistemas complexos. Minha paixão é a intersecção entre o **Código Eficiente** e a **Acessibilidade Universal**.
 
-        💡 **Missão e Valores**
-        Acredito que a tecnologia deve ser democrática. Por isso, foco em desenvolver soluções que incluam todos (como meu sistema de leitura em Braille e áudio). Meus valores são: **Inovação constante, Integridade técnica e Curiosidade sem limites.**
+💡 **Missão e Valores**
+Acredito que a tecnologia deve ser democrática. Por isso, foco em desenvolver soluções que incluam todos (como meu sistema de leitura em Braille e áudio). Meus valores são: **Inovação constante, Integridade técnica e Curiosidade sem limites.**
 
-        🎯 **Visão de Futuro**
-        Meu objetivo é fundar a **LZ Tech**, uma empresa focada em transformar a vida das pessoas através de softwares inteligentes e hardware de alta performance.
-        """
-        write_braille(f'<div class="tech-card">{perfil_text}</div>', is_markdown=True)
+🎯 **Visão de Futuro**
+Meu objetivo é fundar a **LZ Tech**, uma empresa focada em transformar a vida das pessoas através de softwares inteligentes e hardware de alta performance."""
+        
+        # Render the card manually to avoid markdown issues inside HTML
+        st.markdown('<div class="tech-card">', unsafe_allow_html=True)
+        write_braille(perfil_text, is_markdown=True)
+        st.markdown('</div>', unsafe_allow_html=True)
         
     with col_perfil2:
         write_braille("### ⚡ Estatísticas LZ", is_markdown=True)
