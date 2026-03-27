@@ -389,21 +389,67 @@ if selected == "Home":
 elif selected == "Perfil":
     write_braille('<h2 class="graffiti-text">Sobre Mim</h2>', is_markdown=True)
     
-    perfil_text = """
-    👤 Nome: Luiz Otavio Valenzi Sousa
-    🎂 Idade: 23 anos
-    ⚥ Sexo: Masculino
+    col_perfil1, col_perfil2 = st.columns([1.2, 1])
     
-    🚀 Apaixonado por tecnologia desde cedo, transformo ideias em soluções reais através da programação.
-    Desde pequeno, mergulhei no universo da informática e descobri na tecnologia não apenas um interesse, mas um propósito de vida.
+    with col_perfil1:
+        perfil_text = """
+        👤 **Identidade Digital**
+        - **Nome:** Luiz Otavio Valenzi Sousa
+        - **Idade:** 23 anos
+        - **Localização:** Minas Gerais, Brasil
+        - **Status:** Desenvolvedor & Futuro Engenheiro de Software
 
-    💡 Meu objetivo vai além de programar: quero inovar, impactar e construir algo grande.
-    Sonho em ter minha própria empresa e estou constantemente evoluindo minhas habilidades para alcançar esse objetivo.
+        🚀 **Minha Jornada**
+        Desde os primeiros cliques, a tecnologia foi meu playground. Comecei desmontando e montando hardwares e hoje construo sistemas complexos. Minha paixão é a intersecção entre o **Código Eficiente** e a **Acessibilidade Universal**.
 
-    🔥 Focado em crescimento contínuo, busco sempre aprender novas tecnologias, desenvolver projetos relevantes e criar soluções inteligentes que façam a diferença no mundo.
-    """
+        💡 **Missão e Valores**
+        Acredito que a tecnologia deve ser democrática. Por isso, foco em desenvolver soluções que incluam todos (como meu sistema de leitura em Braille e áudio). Meus valores são: **Inovação constante, Integridade técnica e Curiosidade sem limites.**
+
+        🎯 **Visão de Futuro**
+        Meu objetivo é fundar a **LZ Tech**, uma empresa focada em transformar a vida das pessoas através de softwares inteligentes e hardware de alta performance.
+        """
+        write_braille(f'<div class="tech-card">{perfil_text}</div>', is_markdown=True)
+        
+    with col_perfil2:
+        write_braille("### ⚡ Estatísticas LZ", is_markdown=True)
+        stats = [
+            ("💻", "Anos de Código", "5+"),
+            ("🛠️", "Reparos de PC", "500+"),
+            ("📁", "Projetos GitHub", "15+"),
+            ("📚", "Certificações", "20+")
+        ]
+        
+        for icon, label, val in stats:
+            st.markdown(f"""
+            <div class="tech-card" style="margin-bottom: 10px; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 1.5rem;">{icon}</span>
+                <span style="color: #e0f7fa; font-family: 'Share Tech Mono';">{label}</span>
+                <span style="color: #00ffcc; font-weight: bold; font-size: 1.2rem;">{val}</span>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.session_state.get('braille_mode', False):
+                st.markdown(f'<p class="braille-text">{text_to_braille(f"{label}: {val}")}</p>', unsafe_allow_html=True)
+
+    write_braille("---", is_markdown=True)
+    write_braille("### � Linha do Tempo Profissional", is_markdown=True)
     
-    write_braille(f'<div class="tech-card">{perfil_text}</div>', is_markdown=True)
+    timeline = [
+        ("2020", "Início do Curso Técnico no IFSULDEMINAS - Onde a paixão virou profissão."),
+        ("2022", "Primeiros Projetos Freelance em Manutenção e Redes."),
+        ("2023", "Ingresso na Engenharia de Software - Foco total em desenvolvimento."),
+        ("2024", "Criação do sistema Cores & Fragrâncias e foco em acessibilidade."),
+        ("2025+", "Expansão da LZ Tech e novos horizontes em IA e Mobile.")
+    ]
+    
+    for year, event in timeline:
+        st.markdown(f"""
+        <div style="border-left: 3px solid #00ffcc; padding-left: 20px; margin-left: 10px; margin-bottom: 20px;">
+            <h4 style="color: #00ffcc; margin: 0;">{year}</h4>
+            <p style="color: #e0f7fa; margin: 5px 0;">{event}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.session_state.get('braille_mode', False):
+            st.markdown(f'<p class="braille-text">{text_to_braille(f"{year}: {event}")}</p>', unsafe_allow_html=True)
 
 # --- HABILIDADES SECTION ---
 elif selected == "Habilidades":
@@ -634,6 +680,24 @@ allowfullscreen>
 <p>📧 valenzisousaluizotavio@gmail.com</p>
 </div>"""
         st.markdown(links_html, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        write_braille("### 💬 Feedbacks & Reconhecimento", is_markdown=True)
+        testimonials = [
+            ("⭐", "Excelente profissional! O sistema Cores & Fragrâncias superou as expectativas.", "Berenice - Cliente"),
+            ("🚀", "Destaque técnico na faculdade, sempre focado em soluções acessíveis.", "Coordenação - Engenharia de Software"),
+            ("🛠️", "Confiança total na manutenção de nossos computadores há anos.", "Clientes de Manutenção")
+        ]
+        
+        for icon, text, author in testimonials:
+            st.markdown(f"""
+            <div class="tech-card" style="margin-bottom: 10px; padding: 15px; border-left: 3px solid #00ffcc;">
+                <p style="font-style: italic; color: #e0f7fa; font-size: 0.9rem;">"{text}"</p>
+                <p style="color: #00ffcc; font-weight: bold; margin: 0; font-size: 0.8rem;">{icon} {author}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.session_state.get('braille_mode', False):
+                st.markdown(f'<p class="braille-text">{text_to_braille(f"{author}: {text}")}</p>', unsafe_allow_html=True)
         if st.session_state.get('braille_mode', False):
             st.markdown(f'<p class="braille-text">{text_to_braille("Redes Sociais: GitHub, LinkedIn, Instagram e WhatsApp")}</p>', unsafe_allow_html=True)
 
