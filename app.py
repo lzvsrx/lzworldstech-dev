@@ -385,7 +385,7 @@ if selected == "Home":
     col1, col2 = st.columns([2, 1])
     with col1:
         write_braille('<h1 class="graffiti-text">Luiz Otavio Valenzi Sousa</h1>', is_markdown=True)
-        write_braille("### � Desenvolvedor Full-Stack & Futuro Engenheiro de Software", is_markdown=True)
+        write_braille("### 💻 Desenvolvedor Full-Stack & Futuro Engenheiro de Software", is_markdown=True)
         write_braille("✨ Bem-vindo ao meu universo tecnológico. Transformando sonhos em código. 🌌")
         write_braille("📍 Localizado em Pouso Alegre - MG")
         
