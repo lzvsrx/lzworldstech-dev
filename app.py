@@ -295,13 +295,13 @@ with st.sidebar:
     write_braille("### 👤 Quem é Luiz Otavio?", is_markdown=True, is_sidebar=True)
     sidebar_bio = """
     - **Idade:** 23 anos
-    - **Local:** Pouso Alegre - MG
+    - **Local:** Pouso Alegre Minas Gerais Brasil
     - **Foco:** Software & Hardware
     - **Objetivo:** Inovação Digital
     """
-    st.markdown(f'<div class="tech-card" style="padding: 15px; font-size: 0.9rem; border-color: rgba(0, 255, 204, 0.2);">{sidebar_bio}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-card" style="padding: 15px; font-size: 0.9rem; border-color: rgba(0, 25, 204, 0.2);">{sidebar_bio}</div>', unsafe_allow_html=True)
     if st.session_state.get('braille_mode', False):
-        st.sidebar.markdown(f'<p class="braille-text" style="font-size: 1rem !important;">{text_to_braille("Luiz Otavio: 23 anos, Pouso Alegre - MG, Software e Hardware")}</p>', unsafe_allow_html=True)
+        st.sidebar.markdown(f'<p class="braille-text" style="font-size: 1rem !important;">{text_to_braille("Luiz Otavio: 23 anos, Pouso Alegre Minas Gerais Brasil, Software e Hardware")}</p>', unsafe_allow_html=True)
 
     st.markdown("---")
     write_braille("### ♿ Acessibilidade", is_markdown=True, is_sidebar=True)
@@ -388,7 +388,7 @@ if selected == "Home":
         write_braille('<h1 class="graffiti-text">Luiz Otavio Valenzi Sousa</h1>', is_markdown=True)
         write_braille("### 💻 Desenvolvedor Full-Stack & Futuro Engenheiro de Software", is_markdown=True)
         write_braille("✨ Bem-vindo ao meu universo tecnológico. Transformando sonhos em código. 🌌")
-        write_braille("📍 Localizado em Pouso Alegre - MG")
+        write_braille("📍 Localizado em Pouso Alegre Minas Gerais Brasil")
         
     with col2:
         # Check if profile picture exists, else use placeholder
@@ -413,9 +413,9 @@ elif selected == "Perfil":
                 <h3 style="color: #00ffcc; font-size: 1.2rem; margin-bottom: 15px;">👤 Identidade Digital</h3>
                 <ul style="list-style-type: none; padding-left: 0; color: #e0f7fa;">
                     <li style="margin-bottom: 8px;"><strong>Nome:</strong> Luiz Otavio Valenzi Sousa</li>
-                    <li style="margin-bottom: 8px;"><strong>Idade:</strong> 23 anos</li>
-                    <li style="margin-bottom: 8px;"><strong>Localização:</strong> Pouso Alegre - MG</li>
-                    <li style="margin-bottom: 8px;"><strong>Status:</strong> Desenvolvedor & Futuro Engenheiro de Software</li>
+                <li style="margin-bottom: 8px;"><strong>Idade:</strong> 23 anos</li>
+                <li style="margin-bottom: 8px;"><strong>Localização:</strong> Pouso Alegre Minas Gerais Brasil</li>
+                <li style="margin-bottom: 8px;"><strong>Status:</strong> Desenvolvedor & Futuro Engenheiro de Software</li>
                 </ul>
                 
                 <h3 style="color: #00ffcc; font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px;">🚀 Minha Jornada</h3>
