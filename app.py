@@ -293,13 +293,15 @@ with st.sidebar:
     
     # Personal Info Section in Sidebar
     write_braille("### 👤 Quem é Luiz Otavio?", is_markdown=True, is_sidebar=True)
-    sidebar_bio = """
-    - **Idade:** 23 anos
-    - **Local:** Pouso Alegre Minas Gerais Brasil
-    - **Foco:** Software & Hardware
-    - **Objetivo:** Inovação Digital
+    sidebar_html = """
+    <div class="tech-card" style="padding: 15px; font-size: 0.9rem; border-color: rgba(0, 25, 204, 0.2);">
+        <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Idade:</strong> 23 anos</p>
+        <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Local:</strong> Pouso Alegre Minas Gerais Brasil</p>
+        <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Foco:</strong> Software & Hardware</p>
+        <p style="margin: 0; color: #e0f7fa;"><strong>Objetivo:</strong> Inovação Digital</p>
+    </div>
     """
-    st.markdown(f'<div class="tech-card" style="padding: 15px; font-size: 0.9rem; border-color: rgba(0, 25, 204, 0.2);">{sidebar_bio}</div>', unsafe_allow_html=True)
+    st.markdown(sidebar_html, unsafe_allow_html=True)
     if st.session_state.get('braille_mode', False):
         st.sidebar.markdown(f'<p class="braille-text" style="font-size: 1rem !important;">{text_to_braille("Luiz Otavio: 23 anos, Pouso Alegre Minas Gerais Brasil, Software e Hardware")}</p>', unsafe_allow_html=True)
 
