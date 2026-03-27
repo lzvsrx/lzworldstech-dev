@@ -612,50 +612,40 @@ elif selected == "Contato":
     
     with col1:
         write_braille("### Me mande uma mensagem!", is_markdown=True)
-        # Form logic
-        contact_form = """
-        <div class="tech-card">
-            <form action="https://formsubmit.co/valenzisousaluizotavio@gmail.com" method="POST">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_subject" value="Novo Contato do Portfolio LZ TECH!">
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">👤 Seu Nome</label>
-                    <input type="text" name="name" placeholder="Digite seu nome completo..." style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s;" required>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">📧 Seu E-mail</label>
-                    <input type="email" name="email" placeholder="exemplo@email.com" style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s;" required>
-                </div>
-                
-                <div style="margin-bottom: 25px;">
-                    <label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">💬 Mensagem</label>
-                    <textarea name="message" rows="5" placeholder="Como posso te ajudar?" style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s; resize: none;" required></textarea>
-                </div>
-                
-                <button type="submit" style="width: 100%; background: linear-gradient(90deg, #00ffcc, #00ff00); color: #050a15; border: none; padding: 18px; border-radius: 12px; cursor: pointer; font-weight: bold; font-family: 'Share Tech Mono', monospace; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 255, 204, 0.4); transition: 0.4s;">
-                    🚀 Iniciar Transmissão
-                </button>
-            </form>
-        </div>
-        """
+        # Form logic - Using st.components.v1.html or keeping markdown strictly without indentation
+        contact_form = """<div class="tech-card">
+<form action="https://formsubmit.co/valenzisousaluizotavio@gmail.com" method="POST">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_subject" value="Novo Contato do Portfolio LZ TECH!">
+<div style="margin-bottom: 20px;">
+<label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">👤 Seu Nome</label>
+<input type="text" name="name" placeholder="Digite seu nome completo..." style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none;" required>
+</div>
+<div style="margin-bottom: 20px;">
+<label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">📧 Seu E-mail</label>
+<input type="email" name="email" placeholder="exemplo@email.com" style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none;" required>
+</div>
+<div style="margin-bottom: 25px;">
+<label style="color: #00ffcc; font-size: 0.95rem; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">💬 Mensagem</label>
+<textarea name="message" rows="5" placeholder="Como posso te ajudar?" style="width: 100%; padding: 15px; background: rgba(5, 10, 21, 0.6); border: 1px solid rgba(0, 255, 204, 0.4); color: #e0f7fa; border-radius: 10px; font-family: 'Share Tech Mono', monospace; outline: none; resize: none;" required></textarea>
+</div>
+<button type="submit" style="width: 100%; background: linear-gradient(90deg, #00ffcc, #00ff00); color: #050a15; border: none; padding: 18px; border-radius: 12px; cursor: pointer; font-weight: bold; font-family: 'Share Tech Mono', monospace; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);">🚀 Iniciar Transmissão</button>
+</form>
+</div>"""
         st.markdown(contact_form, unsafe_allow_html=True)
         if st.session_state.get('braille_mode', False):
             st.markdown(f'<p class="braille-text">{text_to_braille("Formulário de Contato: Nome, E-mail e Mensagem")}</p>', unsafe_allow_html=True)
         
     with col2:
         write_braille("### Conecte-se comigo", is_markdown=True)
-        links_html = """
-        <div class="tech-card">
-            <p><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="25"> <a href="https://github.com/lzvsrx" style="color: #00ffcc; text-decoration: none;">GitHub</a></p>
-            <p><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="25"> <a href="https://www.linkedin.com/in/luiz-otavio-valenzi-sousa-1180bb360/" style="color: #00ffcc; text-decoration: none;">LinkedIn</a></p>
-            <p><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="25"> <a href="https://www.instagram.com/lzworldstech/" style="color: #00ffcc; text-decoration: none;">Instagram</a></p>
-            <p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="25"> <a href="https://wa.me/5535999215995" style="color: #00ffcc; text-decoration: none;">WhatsApp: +55 35 99921-5995</a></p>
-            <p>📧 valenzisousaluizotavio@gmail.com</p>
-        </div>
-        """
+        links_html = """<div class="tech-card">
+<p><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="25"> <a href="https://github.com/lzvsrx" style="color: #00ffcc; text-decoration: none;">GitHub</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="25"> <a href="https://www.linkedin.com/in/luiz-otavio-valenzi-sousa-1180bb360/" style="color: #00ffcc; text-decoration: none;">LinkedIn</a></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="25"> <a href="https://www.instagram.com/lzworldstech/" style="color: #00ffcc; text-decoration: none;">Instagram</a></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="25"> <a href="https://wa.me/5535999215995" style="color: #00ffcc; text-decoration: none;">WhatsApp: +55 35 99921-5995</a></p>
+<p>📧 valenzisousaluizotavio@gmail.com</p>
+</div>"""
         st.markdown(links_html, unsafe_allow_html=True)
         if st.session_state.get('braille_mode', False):
             st.markdown(f'<p class="braille-text">{text_to_braille("Redes Sociais: GitHub, LinkedIn, Instagram e WhatsApp")}</p>', unsafe_allow_html=True)
