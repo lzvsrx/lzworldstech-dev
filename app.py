@@ -392,9 +392,9 @@ Meu objetivo é fundar a <strong>LZ Tech</strong>, uma empresa focada em transfo
         write_braille("### ⚡ Estatísticas LZ", is_markdown=True)
         stats = [
             ("💻", "Anos de Código", "5+"),
-            ("🛠️", "Reparos de PC", "500+"),
+            ("🛠️", "Reparos de PC", "6"),
             ("📁", "Projetos GitHub", "15+"),
-            ("📚", "Certificações", "20+")
+            ("📚", "Certificações", "20")
         ]
         
         for icon, label, val in stats:
