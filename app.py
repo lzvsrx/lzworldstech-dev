@@ -3,9 +3,32 @@ from streamlit_option_menu import option_menu
 import base64
 import os
 import textwrap
+from deep_translator import GoogleTranslator
+import re
 
 # Page Config
 st.set_page_config(page_title="Luiz Otavio Valenzi Sousa - Portfolio", page_icon="💻", layout="wide")
+
+# --- TRANSLATION SYSTEM ---
+@st.cache_data(show_spinner=False)
+def translate_text(text, target_lang='pt'):
+    if target_lang == 'pt' or not text:
+        return text
+    try:
+        # Strip HTML for translation to avoid breaking tags
+        clean_text = re.sub(r'<[^>]+>', '', str(text))
+        if not clean_text.strip():
+            return text
+        
+        translated = GoogleTranslator(source='auto', target=target_lang).translate(clean_text)
+        
+        # If the original was HTML, we try to preserve structure (basic)
+        if '<' in str(text) and '>' in str(text):
+            # This is a simplified approach, for complex HTML we'd need a parser
+            return text.replace(clean_text, translated)
+        return translated
+    except Exception:
+        return text
 
 def get_base64_font(font_path):
     if os.path.exists(font_path):
@@ -27,15 +50,22 @@ def text_to_braille(text):
 
 def write_braille(text, is_markdown=False, is_sidebar=False):
     container = st.sidebar if is_sidebar else st
+    
+    # --- AUTOMATIC TRANSLATION ---
+    target_lang = st.session_state.get('target_lang', 'pt')
+    display_text = text
+    if target_lang != 'pt':
+        display_text = translate_text(text, target_lang)
+
     if is_markdown:
-        container.markdown(text, unsafe_allow_html=True)
+        container.markdown(display_text, unsafe_allow_html=True)
     else:
-        container.write(text)
+        container.write(display_text)
     
     if st.session_state.get('braille_mode', False):
         import re
         # Remove markdown/html symbols for braille translation
-        clean_text = re.sub(r'<[^>]+>', '', str(text)) # remove HTML tags
+        clean_text = re.sub(r'<[^>]+>', '', str(display_text)) # remove HTML tags
         clean_text = clean_text.replace("**", "").replace("*", "").replace("#", "").replace("---", "")
         container.markdown(f'<p class="braille-text">{text_to_braille(clean_text)}</p>', unsafe_allow_html=True)
 
@@ -177,99 +207,8 @@ custom_style = f"""
         clip: rect(0, 0, 0, 0);
         border: 0;
     }}
-
-    /* Google Translate Widget Custom Styling */
-    #google_translate_element {{
-        padding: 8px;
-        background: rgba(10, 25, 47, 0.8);
-        border: 1px solid #00ffcc;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        min-height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }}
-    .goog-te-gadget {{
-        font-family: 'Share Tech Mono', monospace !important;
-        color: #00ffcc !important;
-    }}
-    .goog-te-gadget select {{
-        background: #0a192f !important;
-        color: #00ffcc !important;
-        border: 1px solid #00ffcc !important;
-        border-radius: 6px !important;
-        padding: 6px !important;
-        font-family: 'Share Tech Mono', monospace !important;
-    }}
-    .goog-te-banner-frame.skiptranslate {{
-        display: none !important;
-    }}
-    body {{
-        top: 0px !important;
-    }}
-    .translate-hidden {{
-        display: none !important;
-    }}
-
-    /* Quick Language Buttons Styling */
-    .lang-container {{
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin-top: 15px;
-    }}
-    .lang-btn {{
-        background: rgba(10, 25, 47, 0.6);
-        border: 1px solid rgba(0, 255, 204, 0.4);
-        color: #00ffcc;
-        padding: 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 0.85rem;
-        text-align: center;
-        transition: all 0.3s ease;
-    }}
-    .lang-btn:hover {{
-        background: #00ffcc;
-        color: #050a15;
-        box-shadow: 0 0 15px #00ffcc;
-        border-color: #00ffcc;
-        transform: translateY(-2px);
-    }}
 </style>
 <div class="bg-lines"></div>
-
-<!-- Google Translate Scripts and Helper -->
-<script type="text/javascript">
-function googleTranslateElementInit() {{
-  new google.translate.TranslateElement({{
-    pageLanguage: 'pt',
-    autoDisplay: false
-  }}, 'google_translate_element');
-}}
-
-function changeLanguage(langCode) {{
-    var selectField = document.querySelector(".goog-te-gadget select");
-    if (selectField) {{
-        selectField.value = langCode;
-        // Trigger change event for both 'change' and 'input' to ensure Google script detects it
-        selectField.dispatchEvent(new Event('change', {{ bubbles: true }}));
-        selectField.dispatchEvent(new Event('input', {{ bubbles: true }}));
-    }} else {{
-        // Fallback: If select is not ready, wait and try once more
-        setTimeout(function() {{
-            var retrySelect = document.querySelector(".goog-te-gadget select");
-            if (retrySelect) {{
-                retrySelect.value = langCode;
-                retrySelect.dispatchEvent(new Event('change', {{ bubbles: true }}));
-            }}
-        }}, 500);
-    }}
-}}
-</script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 """
 
 # Inject custom CSS and Google Translate scripts
@@ -278,28 +217,25 @@ st.markdown(custom_style, unsafe_allow_html=True)
 # Sidebar Navigation
 with st.sidebar:
     write_braille("### 🌍 Idioma & Tradução", is_markdown=True, is_sidebar=True)
-    translate_active = st.toggle("Ativar Tradutor Global", key="translate_active")
     
-    # Show/Hide Google Translate widget using the toggle
-    translate_class = "" if translate_active else "translate-hidden"
-    st.markdown(f'<div id="google_translate_element" class="{translate_class}"></div>', unsafe_allow_html=True)
+    # New Native Translation System
+    languages = {
+        "Português": "pt",
+        "English": "en",
+        "Español": "es",
+        "Français": "fr",
+        "日本語": "ja",
+        "中文": "zh-CN",
+        "Deutsch": "de",
+        "Italiano": "it",
+        "Русский": "ru"
+    }
     
-    if translate_active:
-        write_braille("🚀 Seleção Rápida:", is_sidebar=True)
-        st.markdown("""
-        <div class="lang-container">
-            <div class="lang-btn" onclick="changeLanguage('en')">🇺🇸 ENGLISH</div>
-            <div class="lang-btn" onclick="changeLanguage('es')">🇪🇸 ESPAÑOL</div>
-            <div class="lang-btn" onclick="changeLanguage('fr')">🇫🇷 FRANÇAIS</div>
-            <div class="lang-btn" onclick="changeLanguage('ja')">🇯🇵 日本語</div>
-            <div class="lang-btn" onclick="changeLanguage('zh-CN')">🇨🇳 中文</div>
-            <div class="lang-btn" onclick="changeLanguage('pt')">🇧🇷 PORTUGUÊS</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("---")
-        write_braille("Outras Linguagens (Todas):", is_sidebar=True)
-        st.info("Escolha qualquer idioma do mundo na lista abaixo:")
+    selected_lang_name = st.selectbox("Escolha o Idioma:", list(languages.keys()), index=0)
+    st.session_state['target_lang'] = languages[selected_lang_name]
+    
+    if st.session_state['target_lang'] != 'pt':
+        st.info(f"Tradução automática para {selected_lang_name} ativada.")
     
     st.markdown("---")
     
