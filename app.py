@@ -243,24 +243,36 @@ custom_style = f"""
 
 <!-- Google Translate Scripts and Helper -->
 <script type="text/javascript">
-function googleTranslateElementInit() {{
-  new google.translate.TranslateElement({{
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
     pageLanguage: 'pt',
     autoDisplay: false
-  }}, 'google_translate_element');
-}}
+  }, 'google_translate_element');
+}
 
-function changeLanguage(langCode) {{
+function changeLanguage(langCode) {
     var selectField = document.querySelector(".goog-te-gadget select");
-    if (selectField) {{
+    if (selectField) {
         selectField.value = langCode;
-        selectField.dispatchEvent(new Event('change'));
-    }}
-}}
+        // Trigger change event for both 'change' and 'input' to ensure Google script detects it
+        selectField.dispatchEvent(new Event('change', { bubbles: true }));
+        selectField.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+        // Fallback: If select is not ready, wait and try once more
+        setTimeout(function() {
+            var retrySelect = document.querySelector(".goog-te-gadget select");
+            if (retrySelect) {
+                retrySelect.value = langCode;
+                retrySelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }, 500);
+    }
+}
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 """
 
+# Inject custom CSS and Google Translate scripts
 st.markdown(custom_style, unsafe_allow_html=True)
 
 # Sidebar Navigation
