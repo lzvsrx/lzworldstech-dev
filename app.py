@@ -242,8 +242,9 @@ with st.sidebar:
     # Personal Info Section in Sidebar
     write_braille("### 👤 Quem é Luiz Otavio?", is_markdown=True, is_sidebar=True)
     sidebar_html = """
-    <div class="tech-card" style="padding: 15px; font-size: 0.9rem; border-color: rgba(0, 25, 204, 0.2);">
-        <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Idade:</strong> 23 anos</p>
+    <div class="tech-card" style="padding: 15px; font-size: 0.9rem; border-color: rgba(0, 255, 204, 0.2);">
+        <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Identidade:</strong> Luiz Otavio Valenzi Sousa</p>
+        <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Status:</strong> Profissional Autônomo</p>
         <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Local:</strong> Pouso Alegre Minas Gerais Brasil</p>
         <p style="margin: 0 0 8px 0; color: #e0f7fa;"><strong>Foco:</strong> Software & Hardware</p>
         <p style="margin: 0; color: #e0f7fa;"><strong>Objetivo:</strong> Inovação Digital</p>
@@ -643,6 +644,13 @@ allowfullscreen>
 </iframe>"""
         st.markdown(jotform_iframe, unsafe_allow_html=True)
         
+        # LGPD Notice for Compliance
+        st.markdown("""
+        <div style="font-size: 0.75rem; color: #e0f7fa; background: rgba(0, 255, 204, 0.05); padding: 10px; border-radius: 8px; margin-top: 10px;">
+            ⚖️ <strong>Aviso LGPD:</strong> Seus dados são usados apenas para retorno de contato profissional e não são compartilhados. Ao enviar o formulário, você concorda com o processamento dos dados fornecidos para este fim exclusivo.
+        </div>
+        """, unsafe_allow_html=True)
+        
         if st.session_state.get('braille_mode', False):
             st.markdown(f'<p class="braille-text">{text_to_braille("Formulário de Contato Jotform: Envio de Projetos de Site")}</p>', unsafe_allow_html=True)
         
@@ -678,4 +686,13 @@ allowfullscreen>
             st.markdown(f'<p class="braille-text">{text_to_braille("Redes Sociais: GitHub, LinkedIn, Instagram e WhatsApp")}</p>', unsafe_allow_html=True)
 
 # Footer
-write_braille('<div class="footer">Desenvolvido por lzworldstech</div>', is_markdown=True)
+footer_html = """
+<div class="footer">
+    <p style="margin: 0;">Desenvolvido por <strong>Luiz Otavio Valenzi Sousa</strong> | LZ TECH</p>
+    <p style="font-size: 0.7rem; margin-top: 5px; opacity: 0.7;">
+        Portfólio Profissional de Desenvolvedor Autônomo | Pouso Alegre - MG - Brasil<br>
+        Em conformidade com a LGPD e Acessibilidade Web (LBI).
+    </p>
+</div>
+"""
+write_braille(footer_html, is_markdown=True)
