@@ -532,43 +532,32 @@ elif selected == "Carreira":
         
     with col2:
         write_braille("### 📜 Cursos & Certificados", is_markdown=True)
-        courses = {
-            "Imersão Front-End - Alura (2024)": ("alura.pdf", "🎨"),
-            "Direito Eletrônico - Anhanguera (2023)": ("direito-eletronico.pdf", "⚖️"),
-            "Tecnologias da Informação Aplicadas ao Direito - Anhanguera (2023)": ("TECNOLOGIAS DE INFORMAÇÃO APLICADAS AO DIREITO.pdf", "⚖️"),
-            "Tecnologia, Direito Digital e Propriedade Intelectual - Anhanguera (2023)": ("TECNOLOGIA, DIREITO DIGITAL E PROPRIEDADE INTELECTUAL.pdf", "⚖️"),
-            "Novos Desenvolvimentos em IoT - Anhanguera (2023)": ("NOVOS DESENVOLVIMENTOS EM IOT.pdf", "🌐"),
-            "Redes de Computadores e IoT - Anhanguera (2023)": ("REDES DE COMPUTADORES E A INTERNET DAS COISAS.pdf", "🌐"),
-            "Sensores, Microcontroladores e Programação IoT - Anhanguera (2023)": ("SENSORES, MICROCONTROLADORES E PROGRAMAÇÃO EM INTERNET DAS COISAS.pdf", "🌐"),
-            "IoT e Programação de Sensores - Anhanguera (2023)": ("IOT e Programação de Sensores.pdf", "🌐"),
-            "Empreendedorismo e Inovação - Anhanguera (2023)": ("EMPREENDEDORISMO E INOVAÇÃO.pdf", "💡"),
-            "Processo da Criatividade - Anhanguera (2023)": ("PROCESSO DA CRIATIVIDADE.pdf", "💡"),
-            "Estruturas de Dados em Python - Anhanguera (2023)": ("ESTRUTURAS DE DADOS EM PYTHON.pdf", "🐍"),
-            "Introdução à Análise de Dados com Python - Anhanguera (2023)": ("INTRODUÇÃO À ANÁLISE DE DADOS COM PYTHON.pdf", "🐍"),
-            "Introdução à Linguagem Python - Anhanguera (2023)": ("INTRODUÇÃO À LINGUAGEM PYTHON.pdf", "🐍"),
-            "Análise de Dados com Python - Anhanguera (2023)": ("analise de dados com python.pdf", "🐍"),
-            "Django Web Framework + DRF - Udemy (2026)": ("django.pdf", "🎯"),
-            "Frontend HTML CSS JS + Projetos - Udemy (2026)": ("html-css-js.pdf", "💻"),
-            "Python 3 do Básico ao Avançado - Udemy (2023)": ("python.pdf", "🐍")
-        }
         
-        for course_name, (pdf_filename, icon) in courses.items():
-            with st.expander(f"{icon} {course_name}"):
-                write_braille("Visualizar certificado")
-                write_braille(course_name)
-                
-                # Try multiple paths for PDFs
-                pdf_paths = [f"assets/certs/{pdf_filename}", f"assets/fonts/{pdf_filename}"]
-                base64_pdf = ""
-                for p in pdf_paths:
-                    base64_pdf = get_base64_resource(p)
-                    if base64_pdf: break
-                
-                if base64_pdf:
-                    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="100%" height="400" type="application/pdf">'
-                    st.markdown(pdf_display, unsafe_allow_html=True)
-                else:
-                    write_braille(f"⚠️ Certificado {pdf_filename} não encontrado.")
+        # Dynamic search for certificates in assets/certs
+        cert_dir = "assets/certs"
+        if os.path.exists(cert_dir):
+            cert_files = [f for f in os.listdir(cert_dir) if f.lower().endswith('.pdf')]
+            
+            if cert_files:
+                for pdf_filename in sorted(cert_files):
+                    # Clean filename for display
+                    display_name = pdf_filename.replace('.pdf', '').replace('_', ' ').title()
+                    
+                    with st.expander(f"📜 {display_name}"):
+                        write_braille(f"Visualizar certificado: {display_name}")
+                        
+                        pdf_path = os.path.join(cert_dir, pdf_filename)
+                        base64_pdf = get_base64_resource(pdf_path)
+                        
+                        if base64_pdf:
+                            pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="100%" height="500" type="application/pdf">'
+                            st.markdown(pdf_display, unsafe_allow_html=True)
+                        else:
+                            write_braille(f"⚠️ Erro ao carregar o arquivo {pdf_filename}")
+            else:
+                write_braille("ℹ️ Nenhum certificado PDF encontrado na pasta assets/certs.")
+        else:
+            write_braille("⚠️ Pasta assets/certs não encontrada.")
 
 # --- PROJETOS SECTION ---
 elif selected == "Projetos":
