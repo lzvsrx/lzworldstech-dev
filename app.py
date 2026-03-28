@@ -214,6 +214,17 @@ custom_style = f"""
 # Inject custom CSS and Google Translate scripts
 st.markdown(custom_style, unsafe_allow_html=True)
 
+# Cookie Consent Banner (Simplified for Legal Compliance)
+if 'cookies_accepted' not in st.session_state:
+    with st.container():
+        col_c1, col_c2 = st.columns([4, 1])
+        with col_c1:
+            st.caption("🍪 Este site utiliza cookies básicos para melhorar sua experiência e garantir a segurança legal da navegação.")
+        with col_c2:
+            if st.button("Aceitar"):
+                st.session_state.cookies_accepted = True
+                st.rerun()
+
 # Sidebar Navigation
 with st.sidebar:
     write_braille("### 🌍 Idioma & Tradução", is_markdown=True, is_sidebar=True)
@@ -251,6 +262,14 @@ with st.sidebar:
     </div>
     """
     st.markdown(sidebar_html, unsafe_allow_html=True)
+    
+    # Legal Verification Badge
+    st.markdown("""
+    <div style="background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; border-radius: 10px; padding: 10px; margin-top: 10px; text-align: center;">
+        <span style="color: #00ffcc; font-size: 0.8rem; font-weight: bold;">✅ IDENTIDADE VERIFICADA</span><br>
+        <span style="color: #e0f7fa; font-size: 0.7rem;">Portfólio Oficial LZ TECH</span>
+    </div>
+    """, unsafe_allow_html=True)
     if st.session_state.get('braille_mode', False):
         st.sidebar.markdown(f'<p class="braille-text" style="font-size: 1rem !important;">{text_to_braille("Luiz Otavio: 23 anos, Pouso Alegre Minas Gerais Brasil, Software e Hardware")}</p>', unsafe_allow_html=True)
 
@@ -384,6 +403,11 @@ Meus valores são: <strong>Inovação constante, Integridade técnica e Curiosid
 <h3 style="color: #00ffcc; font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px;">🎯 Visão de Futuro</h3>
 <p style="color: #e0f7fa; line-height: 1.6;">
 Meu objetivo é fundar a <strong>LZ Tech</strong>, uma empresa focada em transformar a vida das pessoas através de softwares inteligentes e hardware de alta performance.
+</p>
+
+<h3 style="color: #00ffcc; font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px;">⚖️ Segurança e Verificação Legal</h3>
+<p style="color: #e0f7fa; line-height: 1.6;">
+Este site opera como um <strong>Portfólio Profissional Autônomo</strong>. Todas as atividades aqui descritas estão em conformidade com a legislação brasileira vigente, incluindo a <strong>LGPD (Lei 13.709/2018)</strong> e a <strong>LBI (Lei 13.146/2015)</strong>. Os dados coletados via formulário são criptografados pelo provedor de serviço e utilizados estritamente para fins de orçamento e contato comercial direto.
 </p>
 </div>
 """
@@ -650,6 +674,17 @@ allowfullscreen>
             ⚖️ <strong>Aviso LGPD:</strong> Seus dados são usados apenas para retorno de contato profissional e não são compartilhados. Ao enviar o formulário, você concorda com o processamento dos dados fornecidos para este fim exclusivo.
         </div>
         """, unsafe_allow_html=True)
+        
+        with st.expander("📄 Termos de Uso e Privacidade Detalhados"):
+            st.markdown("""
+            <div style="font-size: 0.85rem; color: #e0f7fa; line-height: 1.4;">
+                <strong>1. Coleta de Dados:</strong> Apenas os dados informados voluntariamente no formulário acima são coletados.<br><br>
+                <strong>2. Finalidade:</strong> O uso é estritamente profissional para responder a solicitações de orçamento ou dúvidas técnicas.<br><br>
+                <strong>3. Segurança:</strong> Utilizamos integração com o Jotform, que aplica protocolos de criptografia SSL e conformidade internacional de segurança.<br><br>
+                <strong>4. Direitos:</strong> Você pode solicitar a exclusão de seus dados a qualquer momento enviando um e-mail para o endereço listado ao lado.<br><br>
+                <strong>5. Verificação:</strong> Este portfólio é mantido por Luiz Otavio Valenzi Sousa, residente em Pouso Alegre - MG, Brasil.
+            </div>
+            """, unsafe_allow_html=True)
         
         if st.session_state.get('braille_mode', False):
             st.markdown(f'<p class="braille-text">{text_to_braille("Formulário de Contato Jotform: Envio de Projetos de Site")}</p>', unsafe_allow_html=True)
