@@ -5,9 +5,29 @@ import os
 import textwrap
 from deep_translator import GoogleTranslator
 import re
+import streamlit.components.v1 as components
+
+# --- STABILITY UTILS ---
+def safe_read_file(path, binary=False):
+    """Safely read a file and return its content or an empty string/bytes."""
+    try:
+        if os.path.exists(path):
+            mode = "rb" if binary else "r"
+            with open(path, mode) as f:
+                return f.read()
+    except Exception as e:
+        st.error(f"Erro ao ler arquivo: {path}")
+    return b"" if binary else ""
+
+def get_base64_resource(path):
+    """Convert resource to base64 safely."""
+    data = safe_read_file(path, binary=True)
+    if data:
+        return base64.b64encode(data).decode()
+    return ""
 
 # Page Config
-st.set_page_config(page_title="Luiz Otavio Valenzi Sousa - Portfolio", page_icon="💻", layout="wide")
+st.set_page_config(page_title="Luiz Otavio Valenzi Sousa - Portfolio", page_icon="💻", layout="wide", initial_sidebar_state="expanded")
 
 # --- TRANSLATION SYSTEM ---
 @st.cache_data(show_spinner=False)
@@ -312,11 +332,10 @@ with st.sidebar:
         Habilidades: Python, HTML, CSS, JavaScript, Django, React e mais. 
         Projetos principais: Cores e Fragrâncias, Unis Estágios e NTB System.
         """
-        # Improved JavaScript using st.components.v1.html to ensure execution
-        import streamlit.components.v1 as components
+        # Improved JavaScript using components.html to ensure execution
         components.html(f"""
             <script>
-                window.speechSynthesis.cancel(); // Para leituras anteriores
+                window.speechSynthesis.cancel();
                 var msg = new SpeechSynthesisUtterance('{content_to_read}');
                 msg.lang = 'pt-BR';
                 msg.rate = 1.0;
@@ -362,13 +381,12 @@ if selected == "Home":
         
     with col2:
         # Check if profile picture exists, else use placeholder
-        if os.path.exists("assets/profile.jpg"):
-            st.markdown('<img src="data:image/jpeg;base64,{}" class="profile-pic">'.format(
-                base64.b64encode(open("assets/profile.jpg", "rb").read()).decode()
-            ), unsafe_allow_html=True)
+        profile_b64 = get_base64_resource("assets/profile.jpg")
+        if profile_b64:
+            st.markdown(f'<img src="data:image/jpeg;base64,{profile_b64}" class="profile-pic" alt="Foto de Perfil de Luiz Otavio">', unsafe_allow_html=True)
         else:
             write_braille("Adicione sua foto em assets/profile.jpg para vê-la aqui com animação!")
-            st.markdown('<img src="https://via.placeholder.com/250" class="profile-pic">', unsafe_allow_html=True)
+            st.markdown('<img src="https://via.placeholder.com/250" class="profile-pic" alt="Placeholder de Perfil">', unsafe_allow_html=True)
 
 # --- PERFIL SECTION ---
 elif selected == "Perfil":
@@ -538,16 +556,19 @@ elif selected == "Carreira":
             with st.expander(f"{icon} {course_name}"):
                 write_braille("Visualizar certificado")
                 write_braille(course_name)
-                pdf_path = f"assets/fonts/{pdf_filename}"
-                if not os.path.exists(pdf_path):
-                    pdf_path = f"assets/certs/{pdf_filename}"
-                if os.path.exists(pdf_path):
-                    with open(pdf_path, "rb") as f:
-                        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-                        pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="100%" height="400" type="application/pdf">'
-                        st.markdown(pdf_display, unsafe_allow_html=True)
+                
+                # Try multiple paths for PDFs
+                pdf_paths = [f"assets/certs/{pdf_filename}", f"assets/fonts/{pdf_filename}"]
+                base64_pdf = ""
+                for p in pdf_paths:
+                    base64_pdf = get_base64_resource(p)
+                    if base64_pdf: break
+                
+                if base64_pdf:
+                    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="100%" height="400" type="application/pdf">'
+                    st.markdown(pdf_display, unsafe_allow_html=True)
                 else:
-                    write_braille(f"⚠️ Certificado {pdf_filename} não encontrado em assets/certs/")
+                    write_braille(f"⚠️ Certificado {pdf_filename} não encontrado.")
 
 # --- PROJETOS SECTION ---
 elif selected == "Projetos":
